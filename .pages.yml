@@ -1,0 +1,246 @@
+# Pages CMS Configuration for Astro Starlight
+# Place this file in the root of your repository
+
+# Media configuration
+media:
+  input: src/assets
+  output: /src/assets
+
+# Content types
+content:
+  # Documentation pages
+  - name: docs
+    label: Documentation
+    type: collection
+    path: src/content/docs
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+        description: The page title (displayed in navigation and browser tabs)
+      
+      - name: description
+        label: Description
+        type: text
+        description: Brief description of the page content (used for SEO and previews)
+      
+      - name: sidebar
+        label: Sidebar Settings
+        type: object
+        description: Controls how this page appears in the sidebar
+        fields:
+          - name: order
+            label: Order
+            type: number
+            description: Position in sidebar (lower numbers appear first)
+          
+          - name: label
+            label: Custom Label
+            type: string
+            description: Override the sidebar label (defaults to title)
+          
+          - name: hidden
+            label: Hidden
+            type: boolean
+            description: Hide this page from the sidebar
+            default: false
+          
+          - name: badge
+            label: Badge
+            type: object
+            description: Add a badge to the sidebar item
+            fields:
+              - name: text
+                label: Badge Text
+                type: string
+              - name: variant
+                label: Badge Style
+                type: select
+                options:
+                  - note
+                  - tip
+                  - caution
+                  - danger
+                  - success
+      
+      - name: prev
+        label: Previous Page
+        type: object
+        description: Override the previous page link
+        fields:
+          - name: link
+            label: Link
+            type: string
+            description: Path to previous page
+          - name: label
+            label: Label
+            type: string
+            description: Custom label for previous link
+      
+      - name: next
+        label: Next Page
+        type: object
+        description: Override the next page link
+        fields:
+          - name: link
+            label: Link
+            type: string
+            description: Path to next page
+          - name: label
+            label: Label
+            type: string
+            description: Custom label for next link
+      
+      - name: hero
+        label: Hero Section
+        type: object
+        description: Large hero section for landing pages
+        fields:
+          - name: title
+            label: Hero Title
+            type: string
+          - name: tagline
+            label: Tagline
+            type: string
+          - name: image
+            label: Hero Image
+            type: object
+            fields:
+              - name: alt
+                label: Alt Text
+                type: string
+              - name: file
+                label: Image File
+                type: image
+          - name: actions
+            label: Action Buttons
+            type: object
+            list: true
+            fields:
+              - name: text
+                label: Button Text
+                type: string
+              - name: link
+                label: Button Link
+                type: string
+              - name: icon
+                label: Icon
+                type: string
+                description: Icon name (e.g., right-arrow, external)
+              - name: variant
+                label: Button Style
+                type: select
+                options:
+                  - primary
+                  - secondary
+                  - minimal
+      
+      - name: banner
+        label: Banner
+        type: object
+        description: Site-wide banner for announcements
+        fields:
+          - name: content
+            label: Banner Content
+            type: string
+            description: Markdown content for the banner
+      
+      - name: lastUpdated
+        label: Last Updated
+        type: date
+        description: Override the last updated date
+      
+      - name: editUrl
+        label: Edit URL
+        type: string
+        description: Custom edit URL for this page
+      
+      - name: tableOfContents
+        label: Table of Contents
+        type: object
+        description: Control the table of contents
+        fields:
+          - name: minHeadingLevel
+            label: Min Heading Level
+            type: number
+            default: 2
+          - name: maxHeadingLevel
+            label: Max Heading Level
+            type: number
+            default: 3
+      
+      - name: template
+        label: Template
+        type: select
+        description: Page template type
+        options:
+          - doc
+          - splash
+        default: doc
+      
+      - name: draft
+        label: Draft
+        type: boolean
+        description: Mark as draft (won't appear in production)
+        default: false
+      
+      - name: body
+        label: Content
+        type: rich-text
+        description: Main page content in Markdown
+
+    # Collection view settings
+    view:
+      fields: [title, description, draft]
+      primary: title
+      sort: [title]
+      default:
+        sort: title
+        order: asc
+      layout: tree
+      node:
+        filename: index.md
+
+    # Filename pattern for new files
+    filename: '{primary}.md'
+
+# Components for reusable field groups
+components:
+  starlight-image:
+    label: Starlight Image
+    type: object
+    fields:
+      - name: src
+        label: Image Source
+        type: image
+        required: true
+      - name: alt
+        label: Alt Text
+        type: string
+        required: true
+      - name: title
+        label: Title
+        type: string
+        description: Tooltip text
+
+  card-grid:
+    label: Card Grid
+    type: object
+    list: true
+    fields:
+      - name: title
+        label: Card Title
+        type: string
+      - name: description
+        label: Card Description
+        type: text
+      - name: icon
+        label: Icon
+        type: string
+        description: Icon name or emoji
+
+# Settings
+settings:
+  content:
+    merge: true
